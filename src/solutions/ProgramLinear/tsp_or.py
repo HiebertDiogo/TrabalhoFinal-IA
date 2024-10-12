@@ -1,11 +1,14 @@
 from docplex.mp.model import Model
-from instances.intance import Instance
-import numpy as np
+# from instances.intance import Instance
+# import numpy as np
 
 class TSP_ProgramacaoLinear():
+    def __init__(self, distances):
+        self.distances = distances
+
     def start(self):
 
-        distancias = Instance().getAllDistances()
+        distancias = self.distances
 
         n = len(distancias)
         modelo = Model('CaixeiroViajante')

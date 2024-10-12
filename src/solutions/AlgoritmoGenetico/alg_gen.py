@@ -36,7 +36,7 @@ class TSP_AlgoritmoGenetico:
         
         print('\n----------------------- Resultados com Algoritmo Genético ----------------------')
         print("Melhor caminho encontrado:", [0] + melhor_caminho[1:])
-        print("Distância total:", self.calcular_distancia(melhor_caminho))
+        print("Distância total:", self.calcular_distancia(melhor_caminho)) 
     
     def calcular_distancia(self, caminho):
         return sum(self.distancias[caminho[i-1]][caminho[i]] for i in range(len(caminho)))
