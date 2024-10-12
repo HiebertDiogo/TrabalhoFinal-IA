@@ -1,20 +1,13 @@
 from docplex.mp.model import Model
+from instances.intance import Instance
 import numpy as np
 
 class TSP_ProgramacaoLinear():
     def start(self):
 
-        distancias = np.array([
-            [0, 2, 9, 10],
-            [1, 0, 6, 4],
-            [15, 7, 0, 8],
-            [6, 3, 12, 0]
-        ])
+        distancias = Instance().getAllDistances()
 
-        # Número de cidades
         n = len(distancias)
-
-        # Criando o modelo
         modelo = Model('CaixeiroViajante')
 
         # Variáveis de decisão
@@ -35,7 +28,6 @@ class TSP_ProgramacaoLinear():
                 if i != j:
                     modelo.add_constraint(u[i] - u[j] + n * x[i, j] <= n-1)
 
-        # Resolvendo o problema
         solucao = modelo.solve()
 
         print('\n----------------------- Resultados com Programação Linear ----------------------\n')
