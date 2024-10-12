@@ -1,9 +1,9 @@
-Projeto Final IA
+Projeto Final IA 
 
-Problema do caixeiro-viajante
+Problema do caixeiro-viajante 
 
-Algoritmo genético
-Simulated annealing
-Busca local
-Programação linear 
-Rede neural
+Algoritmo genético 
+Simulated annealing 
+Busca local 
+Programação linear   
+Rede neural 
