@@ -36,8 +36,13 @@ class TSP_ProgramacaoLinear():
         print('\n----------------------- Resultados com Programação Linear ----------------------\n')
         # Exibindo a solução
         if solucao:
-            rota = [(i, j) for i in range(n) for j in range(n) if i != j and x[i, j].solution_value > 0.5]
-            print("Rota: ", rota)
-            print("Custo total: ", modelo.objective_value)
+            solucao_rota = [(i, j) for i in range(n) for j in range(n) if i != j and x[i, j].solution_value > 0.5]
+
+            rota = [0]
+            for i in solucao_rota:
+                rota.append(solucao_rota[rota[-1]][1])
+
+            print("Rota:", rota)
+            print("Custo total:", modelo.objective_value)
         else:
             print("Nenhuma solução encontrada")

@@ -35,11 +35,13 @@ class TSP_AlgoritmoGenetico:
         melhor_caminho = min(populacao, key=self.calcular_distancia)
         
         print('\n----------------------- Resultados com Algoritmo Genético ----------------------')
-        print("Melhor caminho encontrado:", [0] + melhor_caminho[1:])
-        print("Distância total:", self.calcular_distancia(melhor_caminho)) 
-    
+        print("\nRota:", [0] + melhor_caminho[1:] + [0])
+        print("Custo total:", self.calcular_distancia(melhor_caminho)) 
+
     def calcular_distancia(self, caminho):
-        return sum(self.distancias[caminho[i-1]][caminho[i]] for i in range(len(caminho)))
+        distancia = sum(self.distancias[caminho[i-1]][caminho[i]] for i in range(len(caminho)))
+        distancia += self.distancias[caminho[-1]][caminho[0]]  # Adiciona o custo de voltar à cidade inicial
+        return distancia
 
     def criar_caminho(self, n):
         caminho = list(range(1, n))
