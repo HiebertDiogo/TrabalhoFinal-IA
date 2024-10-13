@@ -34,13 +34,21 @@ class TSP_ProgramacaoLinear():
         solucao = modelo.solve()
 
         print('\n----------------------- Resultados com Programação Linear ----------------------\n')
-        # Exibindo a solução
         if solucao:
-            solucao_rota = [(i, j) for i in range(n) for j in range(n) if i != j and x[i, j].solution_value > 0.5]
-
-            rota = [0]
-            for i in solucao_rota:
-                rota.append(solucao_rota[rota[-1]][1])
+            solucao_rota = {(i, j): x[i, j].solution_value for i in range(n) for j in range(n) if i != j and x[i, j].solution_value > 0.5}
+            
+            # Um dicionário que mapeia a próxima cidade a partir de cada cidade
+            next_city = {i: j for (i, j), val in solucao_rota.items() if val > 0.5}
+            
+            # Reconstroi a rota começando pela cidade de origem
+            origem = 0
+            rota = [origem]
+            while len(rota) < n:
+                proxima = next_city[rota[-1]]
+                rota.append(proxima)
+            
+            # Retorna a origem
+            rota.append(origem)
 
             print("Rota:", rota)
             print("Custo total:", modelo.objective_value)

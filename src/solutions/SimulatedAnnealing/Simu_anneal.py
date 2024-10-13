@@ -11,12 +11,13 @@ class TSP_SimulatedAnnealing:
         self.intermediate_tempr = []
         self.x = 0
     
-    def start(self, initial_path):
-        path = initial_path.copy()
+    def start(self):
+        path = [i for i in range(len(self.distancias))]
+        # path = initial_path.copy()
         cost = self.tour_cost(path)
         self.intermediate_costs.append(cost)
         self.intermediate_tempr.append(self.Tm)
-        n = len(initial_path)
+        n = len(path)
         
         for i in range(1, self.iter_max):
             two_indices = random.sample(range(1, n), 2)
