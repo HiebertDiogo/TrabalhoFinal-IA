@@ -2,14 +2,22 @@ from solutions.ProgramLinear.tsp_or import TSP_ProgramacaoLinear
 from solutions.AlgoritmoGenetico.alg_gen import TSP_AlgoritmoGenetico
 from solutions.SimulatedAnnealing.Simu_anneal import TSP_SimulatedAnnealing
 from solutions.AlgoritmoBusca.alg_busca import TSP_AStar
+from solutions.RL.tsp_rl import TSP_RL
+
 from instances.intance import Instance
+
 import time
 
 def main():
 
     # Intancia
-    distancias = Instance().getAllDistances()
-    
+
+    inst = Instance()
+
+    distancias = inst.getAllDistances()
+    #distancias =  inst.gerar_matrizes_tsp_teste(11, 1)[0]
+
+   
     print('=' * 100)
     print(' ' * 50 + 'Soluções' + (' ' * 30) )
     print('=' * 100)
@@ -23,18 +31,9 @@ def main():
     end_time = time.time()
     print(f"Tempo de execucao: {end_time - start_time} seconds")
 
-    #Algoritimo Genetico
-
-    solucao_algoritmo_genetico = TSP_AlgoritmoGenetico(distancias, 200, 10000, 0.4)
-
-    start_time = time.time()
-    solucao_algoritmo_genetico.start() 
-    end_time = time.time()
-    print(f"Tempo de execucao: {end_time - start_time} seconds")
-
     # Simulated Annealing
 
-    sa = TSP_SimulatedAnnealing(distancias)
+    sa = TSP_SimulatedAnnealing(distancias, 1000, 100000)
 
     start_time = time.time()
     sa.start()
@@ -48,6 +47,34 @@ def main():
 
     start_time = time.time()
     tsp_astar.start()
+    end_time = time.time()
+    print(f"Tempo de execucao: {end_time - start_time} seconds")
+
+
+    # Aprendizado com reforço
+
+    distancias_treinamento = inst.gerar_matrizes_tsp_teste(11, 30)
+
+    handle_rl = TSP_RL()
+
+    start_time = time.time()
+    agent = handle_rl.treinar(distancias_treinamento)
+    end_time = time.time()
+    treino_time = end_time - start_time
+    
+
+    start_time = time.time()
+    handle_rl.start(agent, distancias)
+    end_time = time.time()
+    print(f"Tempo de execucao com modelo: {end_time - start_time} seconds")
+    print(f"Tempo de execucao do treinamento: {treino_time} seconds")
+
+    #Algoritimo Genetico
+
+    solucao_algoritmo_genetico = TSP_AlgoritmoGenetico(distancias, 200, 10000, 0.4)
+
+    start_time = time.time()
+    solucao_algoritmo_genetico.start()
     end_time = time.time()
     print(f"Tempo de execucao: {end_time - start_time} seconds")
 

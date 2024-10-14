@@ -24,6 +24,13 @@ class Instance():
             matriz = [list(map(float, line.split())) for line in file]
             return np.array(matriz)
 
+    def gerar_matrizes_tsp_teste(self, num_cidades, num_matrizes):
+        matrizes = []
+        for _ in range(num_matrizes):
+            matriz = np.random.randint(1, 100, size=(num_cidades, num_cidades))
+            np.fill_diagonal(matriz, 0)  # Distância zero para a mesma cidade
+            matrizes.append(matriz)
+        return matrizes
         
 
     def getPath(self, path: str):

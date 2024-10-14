@@ -49,10 +49,11 @@ class TSP_SimulatedAnnealing:
             self.x += 1
 
         print('\n----------------------- Resultados com Simulated Annealing ----------------------')
-        print("Rota:", path + [0])
-        print("Custo total:", cost)
-        
+        print("\nRota:", path + [0])
+        print("Custo total:", self.tour_cost(path))
+
         return 
     
     def tour_cost(self, path):
-        return sum(self.distancias[path[i-1]][path[i]] for i in range(len(path))) + self.distancias[path[-1]][path[0]]
+        _path = path + [0]
+        return sum(self.distancias[_path[i-1]][_path[i]] for i in range(len(_path))) 

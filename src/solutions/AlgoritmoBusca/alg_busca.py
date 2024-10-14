@@ -60,5 +60,5 @@ class TSP_AStar:
                     heapq.heappush(open_set, (new_f, new_g, prox_cidade, new_path))
         
         print('\n----------------------- Resultados com A* ----------------------')
-        print("Rota:", self.path)
+        print("\nRota:", self.path)
         print("Custo total:", self.cost)
