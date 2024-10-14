@@ -3,10 +3,23 @@ from solutions.AlgoritmoGenetico.alg_gen import TSP_AlgoritmoGenetico
 from solutions.SimulatedAnnealing.Simu_anneal import TSP_SimulatedAnnealing
 from solutions.AlgoritmoBusca.alg_busca import TSP_AStar
 from solutions.RL.tsp_rl import TSP_RL
+import subprocess
 
 from instances.intance import Instance
 
 import time
+
+def run_cpp_program():
+    result = subprocess.run(['./TrabalhoFinal-IA/src/solutions/BuscaLocal/main.exe'], 
+                            stdout=subprocess.PIPE, 
+                            stderr=subprocess.PIPE, 
+                            text=True)
+    
+    if result.returncode == 0:
+        print(result.stdout)
+    else:
+        print(result.stderr)
+
 
 def main():
 
@@ -78,5 +91,6 @@ def main():
     end_time = time.time()
     print(f"Tempo de execucao: {end_time - start_time} seconds")
 
+    run_cpp_program()
 
 main()
