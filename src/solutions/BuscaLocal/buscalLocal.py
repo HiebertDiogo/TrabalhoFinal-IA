@@ -219,19 +219,14 @@ class TSP_LocalSearch:
         nao_melhorou = 0
         copia = []
 
-        # Inicializa a solução usando VND
         s_VND = self.VND(best_solution, best_cost)
 
-        # Copia a solução atual para a solução de backup
         copia = best_solution.copy()
 
         while contador < 100 and nao_melhorou < 7:
-            # Aplica a perturbação à solução copiada
             s_perturbacao = self.perturbacao(copia, s_VND)
-            # Executa o VND na solução perturbada
             s_ILS = self.VND(copia, s_perturbacao)
 
-            # Verifica se a nova solução é melhor
             if s_ILS < s_VND:
                 s_VND = s_ILS
                 nao_melhorou = 0
@@ -252,7 +247,9 @@ class TSP_LocalSearch:
         
         solution_value = self.ILS(solution, solution_value)
 
+        zero_index = solution.index(0)
+
         print("\n----------------------- Resultados com Busca Local ----------------------")
-        print("Rota: ", end="")
-        print(" ".join(map(str, solution)))
+        print("\nRota:", solution[zero_index:] + solution[:zero_index] + [0])
         print(f"Custo total: {solution_value:.3f}")
+
