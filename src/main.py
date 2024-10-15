@@ -3,6 +3,7 @@ from solutions.AlgoritmoGenetico.alg_gen import TSP_AlgoritmoGenetico
 from solutions.SimulatedAnnealing.Simu_anneal import TSP_SimulatedAnnealing
 from solutions.AlgoritmoBusca.alg_busca import TSP_AStar
 from solutions.RL.tsp_rl import TSP_RL
+from solutions.BuscaLocal.buscalLocal import TSP_LocalSearch
 import subprocess
 
 from instances.intance import Instance
@@ -10,13 +11,13 @@ from instances.intance import Instance
 import time
 
 def run_cpp_program():
-    result = subprocess.run(['./TrabalhoFinal-IA/src/solutions/BuscaLocal/main.exe'], 
+    result = subprocess.run(['TrabalhoFinal-IA/src/solutions/BuscaLocal/main.exe'], 
                             stdout=subprocess.PIPE, 
                             stderr=subprocess.PIPE, 
                             text=True)
     
     if result.returncode == 0:
-        print(result.stdout)
+        print(result.stdout)  # Saída do programa C++
     else:
         print(result.stderr)
 
@@ -27,8 +28,8 @@ def main():
 
     inst = Instance()
 
-    distancias = inst.getAllDistances()
-    #distancias =  inst.gerar_matrizes_tsp_teste(11, 1)[0]
+    #distancias = inst.getAllDistances()
+    distancias =  inst.gerar_matrizes_tsp_teste(11, 1)[0]
 
    
     print('=' * 100)
@@ -63,6 +64,14 @@ def main():
     end_time = time.time()
     print(f"Tempo de execucao: {end_time - start_time} seconds")
 
+    #Busca Local
+
+    solucao_busca_local = TSP_LocalSearch(distancias)
+    
+    start_time = time.time()
+    solucao_busca_local.start()
+    end_time = time.time()
+    print(f"Tempo de execucao: {end_time - start_time} seconds")
 
     # Aprendizado com reforço
 
@@ -91,6 +100,5 @@ def main():
     end_time = time.time()
     print(f"Tempo de execucao: {end_time - start_time} seconds")
 
-    run_cpp_program()
 
 main()

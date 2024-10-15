@@ -233,6 +233,94 @@ double VND(vector<int>& bestSolution, const vector<vector<double>>& distanceMatr
     return bestCost;
 }
 
+double perturbacao(vector<int>& copia, double swapCost, const vector<vector<double>> distanceMatrix){
+    int i, j;
+    int aux = 0;
+
+    while(i == j){
+        i = rand() % copia.size();
+        j = rand() % copia.size();
+    }
+
+    swapCost -= distanceMatrix[copia[i]][copia[i+1]];
+
+    if(j != i+1){ // Não adjacentes
+        swapCost -= distanceMatrix[copia[j-1]][copia[j]];
+        swapCost += distanceMatrix[copia[j]][copia[i+1]];
+        swapCost += distanceMatrix[copia[j-1]][copia[i]];
+    }else{
+        swapCost += distanceMatrix[copia[j]][copia[i]];
+    }
+
+    if(i > 0){
+        swapCost -= distanceMatrix[copia[i-1]][copia[i]];
+        swapCost += distanceMatrix[copia[i-1]][copia[j]];
+    }
+
+    if(j < copia.size() - 1){
+        swapCost -= distanceMatrix[copia[j]][copia[j+1]];
+        swapCost += distanceMatrix[copia[i]][copia[j+1]];
+    }
+
+    if(i == 0 && j == copia.size() - 1) { // OK
+        swapCost -= distanceMatrix[copia[j]][copia[i]];
+        swapCost += distanceMatrix[copia[i]][copia[j]];
+    }else if(i == 0 && j < copia.size() - 1){ // OK
+        swapCost -= distanceMatrix[copia[copia.size()-1]][copia[i]];
+        swapCost += distanceMatrix[copia[copia.size()-1]][copia[j]];
+    }else if(i > 0 && j == copia.size() - 1){ // OK
+        swapCost -= distanceMatrix[copia[j]][copia[0]];
+        swapCost += distanceMatrix[copia[i]][copia[0]];
+    }
+
+    aux = copia[j];
+    copia[j] = copia[i];
+    copia[j] = aux;
+
+    double returnSolution = swapCost;
+
+    return swapCost;
+}
+
+void copiaSolucao(const vector<int>& bestSolution, vector<int>& copia){
+  for(int i = 0; i < bestSolution.size(); i++){
+    copia.push_back(bestSolution[i]);
+  }
+
+}
+
+double ILS(vector<int>& bestSolution, const vector<vector<double>>& distanceMatrix, double bestCost){
+  double s_ILS;
+  double sInicial;
+  double sVND;
+  double sPerturbacao;
+  int contador = 0;
+  int naoMelhorou = 0;
+  vector<int> copia;
+
+  sVND = VND(bestSolution, distanceMatrix, bestCost);
+
+  copiaSolucao(bestSolution, copia);
+  
+  while(contador < 100 && naoMelhorou < 7){
+    sPerturbacao = perturbacao(copia, sVND, distanceMatrix);
+    s_ILS =  VND(copia, distanceMatrix, sPerturbacao);
+
+    if(s_ILS < sVND){
+      sVND = s_ILS;
+      naoMelhorou = 0;
+      
+    }else{
+      naoMelhorou++;
+    }
+    
+    contador++;
+  }
+
+  return sVND;
+}
+
+
 int main() {
     vector<int> solution;
     vector<vector<double>> distanceMatrix;
@@ -247,7 +335,7 @@ int main() {
 
     double solutionValue = calculateCost(solution, distanceMatrix);
 
-    solutionValue = VND(solution, distanceMatrix, solutionValue);
+    solutionValue = ILS(solution, distanceMatrix, solutionValue);
 
     auto end = chrono::steady_clock::now();
     chrono::duration<double> elapsed_seconds = end - start;
